@@ -1,0 +1,17 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+mlflow
+PyYAML
+python-box
+ensure
+joblib
+tqdm
+fastapi
+uvicorn
+python-multipart
+gunicorn
+xgboost
+structlog
