@@ -1,0 +1,15 @@
+COLUMNS:
+  Product_id: int64
+  Product_Code: object
+  Warehouse: object
+  Product_Category: object
+  Date: object
+  Order_Demand: int64
+  Open: int64
+  Promo: int64
+  StateHoliday: int64
+  SchoolHoliday: int64
+  Petrol_price: int64
+
+TARGET_COLUMN:
+  name: Order_Demand
