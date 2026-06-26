@@ -1,25 +1,28 @@
 import sys
 from src.productdemand.config.configuration import ConfigurationManager
-from src.productdemand.components.data_ingestion import DataIngestion
+from src.productdemand.components.data_validation import DataValidation
 from src.productdemand.logger.custom_logger import get_logger
 from src.productdemand.exception.custom_exception import CustomException
 
-STAGE_NAME="data ingestion stage"
+STAGE_NAME="data validation stage"
+
 logger = get_logger(__name__)
 
-class DataIngestionTrainingPipeline:
+class DataValidationTrainingPipeline:
     def __init__(self):
         pass
     
-    def initiate_data_ingestion(self):
+    def initiate_data_validation(self):
         try:
             logger.info(f">>>>>> Stage {STAGE_NAME} started <<<<<<")
             
             config = ConfigurationManager()
-            data_ingestion_config = config.get_data_ingestion_config()
-            data_ingestion = DataIngestion(config=data_ingestion_config)
-            data_ingestion.initiate_data_ingestion()
+            data_validation_config = config.get_data_validation_config()
+            data_validation = DataValidation(data_validation_config)
+            result = data_validation.validate_all_columns()
             
+            logger.info(f"Validation Result:{result}")
+
             logger.info(f">>>>>> Stage {STAGE_NAME} completed successfully <<<<<<\n\nx==========x")
 
         except Exception as e:

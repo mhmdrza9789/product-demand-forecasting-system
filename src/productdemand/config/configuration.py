@@ -3,7 +3,7 @@ from pathlib import Path
 from src.productdemand.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH, SCHEMA_FILE_PATH
 from src.productdemand.utils.common import read_yaml, create_directories
 from src.productdemand.exception.custom_exception import CustomException
-from src.productdemand.entity.config_entity import DataIngestionConfig
+from src.productdemand.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformationConfig
 
 class ConfigurationManager:
     def __init__(self,
@@ -34,3 +34,44 @@ class ConfigurationManager:
             return data_ingestion_config
         except Exception as e:
             raise CustomException(e, sys)
+
+    def get_data_validation_config(self) -> DataValidationConfig:
+        config = self.config.data_validation
+        schema = self.schema.COLUMNS
+
+        create_directories([Path(config.root_dir)])
+
+        data_validation_config = DataValidationConfig(
+            root_dir=Path(config.root_dir),
+            status_file=Path(config.STATUS_FILE),
+            data_file=Path(self.config.data_ingestion.local_data_file),
+            all_schema=dict(schema),
+        )
+
+        return data_validation_config 
+
+
+    def get_data_transformation_config(self) -> DataTransformationConfig:
+        config = self.config.data_transformation
+        schema = self.schema.TARGET_COLUMN
+
+        create_directories([
+            Path(config.root_dir),
+            Path(config.regression_dir),
+            Path(config.ensemble_dir),
+            Path(config.lstm_dir)
+        ])
+
+        data_transformation_config = DataTransformationConfig(
+            root_dir=Path(config.root_dir),
+            data_path=Path(config.data_path),
+            regression_dir=Path(config.regression_dir),
+            ensemble_dir=Path(config.ensemble_dir),
+            lstm_dir=Path(config.lstm_dir),
+            scaler_name=config.scaler_name,
+            lstm_scaler_name=config.lstm_scaler_name,
+            target_column=schema.name
+        ) 
+
+        return data_transformation_config 
+    
