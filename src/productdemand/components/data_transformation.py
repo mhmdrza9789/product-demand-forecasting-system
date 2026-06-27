@@ -27,7 +27,7 @@ class DataTransformation:
                 return False
             
             with open(status_path, "r") as f:
-                # خواندن خط اول و استخراج مقدار بعد از دو نقطه
+                
                 first_line = f.readline()
                 status = first_line.split(":")[1].strip().lower()
                 
@@ -60,8 +60,9 @@ class DataTransformation:
         if "Date" not in df.columns:
             raise ValueError("Date column not found in dataframe")
 
-        df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+        df = df.copy()
 
+        df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
         df = df.dropna(subset=["Date"])
 
         df = df.sort_values("Date").reset_index(drop=True)
@@ -72,7 +73,10 @@ class DataTransformation:
         df["dayofweek"] = df["Date"].dt.dayofweek
         df["weekofyear"] = df["Date"].dt.isocalendar().week.astype(int)
 
+        df.drop(columns=["Date"], inplace=True)
+
         return df
+
 
     def handle_missing_values(self, df: pd.DataFrame) -> pd.DataFrame:
         target = self.config.target_column

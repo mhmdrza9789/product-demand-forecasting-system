@@ -4,6 +4,7 @@ from src.productdemand.logger.custom_logger import get_logger
 from src.productdemand.pipeline.data_ingestion_pipeline import DataIngestionTrainingPipeline
 from src.productdemand.pipeline.data_validation_pipeline import DataValidationTrainingPipeline
 from src.productdemand.pipeline.data_transformation_pipeline import DataTransformationTrainingPipeline
+from src.productdemand.pipeline.model_training_pipeline import ModelTrainingPipeline
 
 logger = get_logger(__name__)
 
@@ -17,6 +18,9 @@ if __name__ == "__main__":
 
         data_transformation = DataTransformationTrainingPipeline()
         data_transformation.initiate_data_transformation()
+
+        training_model = ModelTrainingPipeline()
+        training_model.initiate_model_training()
 
     except Exception as e:
         raise CustomException(e,sys)

@@ -3,7 +3,8 @@ from pathlib import Path
 from src.productdemand.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH, SCHEMA_FILE_PATH
 from src.productdemand.utils.common import read_yaml, create_directories
 from src.productdemand.exception.custom_exception import CustomException
-from src.productdemand.entity.config_entity import DataIngestionConfig, DataValidationConfig, DataTransformationConfig
+from src.productdemand.entity.config_entity import (DataIngestionConfig, DataValidationConfig,
+                                                     DataTransformationConfig, ModelTrainerConfig)
 
 class ConfigurationManager:
     def __init__(self,
@@ -75,3 +76,26 @@ class ConfigurationManager:
 
         return data_transformation_config 
     
+    def get_model_trainer_config(self) -> ModelTrainerConfig:
+        config = self.config.model_trainer
+        schema = self.schema
+
+        create_directories([config.root_dir])
+
+        model_trainer_config = ModelTrainerConfig(
+            
+            root_dir=Path(config.root_dir),
+            trained_model_file_path=Path(config.trained_model_file_path),
+            results_file_path=Path(config.results_file_path),
+            metadata_file_path=Path(config.metadata_file_path),
+
+            train_scaled_path=Path(config.train_scaled_path),
+            test_scaled_path=Path(config.test_scaled_path),
+
+            train_unscaled_path=Path(config.train_unscaled_path),
+            test_unscaled_path=Path(config.test_unscaled_path),
+
+            target_column=schema.TARGET_COLUMN.name
+        )
+
+        return model_trainer_config

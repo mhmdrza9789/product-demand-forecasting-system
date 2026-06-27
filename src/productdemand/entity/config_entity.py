@@ -24,3 +24,18 @@ class DataTransformationConfig:
     scaler_name: str
     lstm_scaler_name: str
     target_column: str
+
+@dataclass
+class ModelTrainerConfig:
+    root_dir: Path
+    trained_model_file_path: Path
+    results_file_path: Path
+    metadata_file_path: Path
+
+    train_scaled_path: Path
+    test_scaled_path: Path
+
+    train_unscaled_path: Path
+    test_unscaled_path: Path
+
+    target_column: str

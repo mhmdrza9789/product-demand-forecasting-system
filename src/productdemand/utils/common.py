@@ -85,15 +85,17 @@ def save_json(path: Path, data: dict) -> None:
         CustomException: If saving fails.
     """
     try:
+        path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
 
         with open(path, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=4)
+            json.dump(data, f, indent=4, default=str)
 
         logger.info("JSON file saved successfully", path=str(path))
 
     except Exception as e:
         raise CustomException(e, sys)
+
 
 
 # @ensure_annotations
